@@ -4,7 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaRegHeart } from "react-icons/fa";
 
-const Header = () => {
+interface IHeaderProps {
+  text: string;
+}
+
+const Header = ({ text }: IHeaderProps) => {
   return (
     <div className="flex justify-between h-(68px) w-(1440px) bg-black py-4 px-24">
       <div className="flex gap-3 ">
