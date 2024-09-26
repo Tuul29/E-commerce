@@ -10,6 +10,9 @@ interface IUser {
   role: String;
   profile_img: String;
   address: String;
+  otp: String;
+  passwordResetToken: String;
+  passwordResetTokenExpire: Date;
   updated_at: Date;
   created_at: Date;
 }
@@ -48,6 +51,10 @@ const userSchema = new Schema<IUser>({
     default: "https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_4.png",
   },
   address: String,
+
+  otp: { type: String, default: "" },
+  passwordResetToken: { type: String, default: "" },
+  passwordResetTokenExpire: { type: Date, default: undefined },
 
   updated_at: {
     type: Date,

@@ -1,19 +1,22 @@
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
+import { generateHtmlTemplate } from "./generateHtmlTemplate";
+
 const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
-    secure: true,
-    port: 465,
-    auth: {
-      user: "tuul.tsegmed29@gmail.com",
-      pass: "rhnh tsek mzcp eanp",
-    },
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  secure: true,
+  port: 465,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+export const sendEmail = async (email: string, otp: string) => {
+  await transporter.sendMail({
+    from: process.env.EMAIL_FROM_USER,
+    to: email,
+    subject: "Hello ✔",
+    html: generateHtmlTemplate(otp),
   });
-  const sendEmail= async(email:string, content:string)
-  const info = await transporter.sendMail({
-    from: '"Maddison Foo Koch 👻" <tuul.tsegmed29@gmail.com>', // sender address
-    to: "tuul.tsegmed0329@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
+};

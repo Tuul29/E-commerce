@@ -1,8 +1,9 @@
 import React from "react";
-import { SlBasket } from "react-icons/sl";
+import { Heart, Search, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FaRegHeart } from "react-icons/fa";
+import Image from "next/image";
+import Link from "next/link";
 
 interface IHeaderProps {
   text: string;
@@ -10,24 +11,52 @@ interface IHeaderProps {
 
 const Header = ({ text }: IHeaderProps) => {
   return (
-    <div className="flex justify-between h-(68px) w-(1440px) bg-black py-4 px-24">
-      <div className="flex gap-3 ">
-        <img className="w-8 h-8" src="/img/Vector.png" alt="logo" />
-        <h3 className="text-slate-50">ECOMMERCE</h3>
-        <h4 className="text-slate-500">Ангилал</h4>
+    <header className="flex items-center justify-between bg-black px-4 py-4 text-white text-sm">
+      <div className="flex items-center gap-3 ">
+        <div className="flex items-center gap-1">
+          <Image src="/img/Vector.png" alt="logo" width={32} height={27} />
+          <Link href="/">
+            <span className="text-slate-50">ECOMMERCE</span>
+          </Link>
+        </div>
+        <Link href={"/category"}>
+          <span className="text-muted-foreground">Ангилал</span>
+        </Link>
       </div>
-      <div>
-        <Input placeholder="Бүтээгдэхүүн хайх" />
+      <div className="flex items-center relative">
+        <Search
+          color="white"
+          size={18}
+          className="absolute left-2"
+          strokeWidth={1}
+        />
+        <Input
+          type="text"
+          className="rounded-2xl pl-8 py-2 bg-[#18181B] w-[260px] placeholder:text-muted-foreground border-none"
+          placeholder="Бүтээгдэхүүн хайх"
+        />
       </div>
-      <div className="flex gap-2">
-        <FaRegHeart className="text-slate-50 size-6" />
-        <SlBasket className="text-slate-50 size-6" />
-        <Button className="rounded-2xl  bg-black border-1 border-solid border-blue-500">
-          Бүртгүүлэх
-        </Button>
-        <Button className="rounded-2xl bg-blue-600">Нэвтрэх</Button>
+      <div className="flex items-center gap-3">
+        <Heart color="white" className="mr-3" size={20} strokeWidth={1} />
+        <ShoppingCart
+          strokeWidth={1}
+          color="white"
+          className="mr-3"
+          size={20}
+        />
+        <Link href="/signup">
+          <Button
+            variant="outline"
+            className="rounded-3xl border-blue-primary text-white-primary"
+          >
+            Бүртгүүлэх
+          </Button>
+        </Link>
+        <Link href="/login">
+          <Button className="button-primary">Нэвтрэх</Button>
+        </Link>
       </div>
-    </div>
+    </header>
   );
 };
 
