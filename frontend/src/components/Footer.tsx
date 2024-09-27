@@ -5,7 +5,7 @@ import { FaFacebook } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
-const Footer = () => {
+export const Footer = () => {
   return (
     <div className="bg-black w-{1440px} h-{282px} text-slate-200">
       <div className="flex justify-between border-t-2 py-10 px-24">
@@ -33,5 +33,3 @@ const Footer = () => {
     </div>
   );
 };
-
-export default Footer;

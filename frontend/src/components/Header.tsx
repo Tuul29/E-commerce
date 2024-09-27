@@ -9,7 +9,7 @@ interface IHeaderProps {
   text: string;
 }
 
-const Header = ({ text }: IHeaderProps) => {
+export const Header = () => {
   return (
     <header className="flex items-center justify-between bg-black px-4 py-4 text-white text-sm">
       <div className="flex items-center gap-3 ">
@@ -59,5 +59,3 @@ const Header = ({ text }: IHeaderProps) => {
     </header>
   );
 };
-
-export default Header;
