@@ -6,12 +6,13 @@ import { optimizeImage } from "next/dist/server/image-optimizer";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
-import { toast } from "sonner";
+
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { toast } from "react-toastify";
 const Email = () => {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -38,11 +39,12 @@ const Email = () => {
   };
   const handleConfirmOtp = async (value: string) => {
     setOtpValue(value);
+    console.log("first", value, otpValue);
     if (value.length === 4) {
       try {
         const res = await axios.post(
           "http://localhost:8000/api/v1/auth/verify-otp",
-          { email, otpValue }
+          { email, otpValue: value }
         );
         if (res.status === 200) {
           toast.success(

@@ -39,7 +39,12 @@ const Otp = () => {
         "mujo@nest.edu.mn" хаягт илгээсэн баталгаажуулах кодыг оруулна уу.
       </p>
       <div className="flex flex-col gap-4 text-sm">
-        <InputOTP maxLength={4} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+        <InputOTP
+          maxLength={4}
+          value={otpValue}
+          pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+          onChange={handleConfirnOtp}
+        >
           <InputOTPGroup className="bg-white">
             <InputOTPSlot className="w-14 h-14" index={0} />
             <InputOTPSlot className="w-14 h-14" index={1} />

@@ -57,37 +57,37 @@ export const products: Product[] = [
   {
     name: "Inkblot Tee",
     price: 120000,
-    image: "/products/image5.png",
+    image: "/products/image9.png",
     discount: 0,
   },
   {
     name: "Gestures Longsleeve",
     price: 120000,
-    image: "/products/image6.png",
+    image: "/products/image10.png",
     discount: 0,
   },
   {
     name: "Inkblot Tee",
     price: 120000,
-    image: "/products/image5.png",
+    image: "/products/image11.png",
     discount: 0,
   },
   {
     name: "Gestures Longsleeve",
     price: 120000,
-    image: "/products/image6.png",
+    image: "/products/image12.png",
     discount: 0,
   },
   {
     name: "Inkblot Tee",
     price: 120000,
-    image: "/products/image5.png",
+    image: "/products/image13.png",
     discount: 0,
   },
   {
     name: "Gestures Longsleeve",
     price: 120000,
-    image: "/products/image6.png",
+    image: "/products/image11.png",
     discount: 0,
   },
 ];

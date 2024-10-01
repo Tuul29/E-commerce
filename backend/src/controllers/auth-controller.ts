@@ -14,13 +14,15 @@ export const signup = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
     }
 
-    const crearedUser = await User.create({
+    const createdUser = await User.create({
       firstname,
       lastname,
       email,
       password,
     });
-    res.status(201).json({ message: "create user is sucessfull" });
+    res
+      .status(201)
+      .json({ message: "create user is sucessfull", user: createdUser });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error });
   }
@@ -29,7 +31,9 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
+    console.log("email", email);
+    const user = await User.findOne({ email });
+    console.log("user", user);
 
     if (!user) {
       res.status(404).json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
@@ -98,7 +102,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
   await sendEmail(
     email,
-    `<a href="http://localhost:3000/forgetpass/newpass?resettoken="${resetToken}"">Нууц үг сэргээх холбоос</a>`
+    `<a href="http://localhost:3000/forgetpass/newpass?resettoken=${resetToken}&email=${email}">Нууц үг сэргээх холбоос</a>`
   );
   res.status(200).json({ message: "Нууц үг сэргээх имэйл илгээлээ" });
 };
@@ -112,7 +116,7 @@ export const verifyPassword = async (req: Request, res: Response) => {
     .digest("hex");
   const findUser = await User.findOne({
     passwordResetToken: hashedResetToken,
-    passwordResetTokenExpire: { $gt: Date.now },
+    passwordResetTokenExpire: { $gt: Date.now() },
   });
 
   if (!findUser) {
