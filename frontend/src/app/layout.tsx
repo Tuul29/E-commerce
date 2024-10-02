@@ -3,7 +3,9 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { ToastContainer } from "react-toastify";
+
+import { Toaster } from "@/components/ui/toaster";
+import UserProvider from "@/provider/user-provider";
 // import Header from "@/components/header/page";
 // import "./globals.css";
 // import Footer from "@/components/footer/page";
@@ -25,10 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} `}>
-        <ToastContainer />
-        <Header />
-        {children}
-        <Footer />
+        <UserProvider>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster />
+        </UserProvider>
       </body>
     </html>
   );

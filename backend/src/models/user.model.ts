@@ -50,7 +50,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     default: "https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_4.png",
   },
-  address: String,
+  address: { type: String },
 
   otp: { type: String, default: "" },
   passwordResetToken: { type: String, default: "" },

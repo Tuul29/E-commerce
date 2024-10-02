@@ -17,15 +17,16 @@ const NewPass = () => {
   const router = useRouter();
 
   const handleNewPassword = async () => {
-    if (!(password === repassword)) {
+    if (password === repassword) {
       const resetToken = params.get("resettoken");
       console.log(password, resetToken);
       try {
         const res = await axios.post(
-          `http://localhost:8000/api/v1/auth/verity-password`,
+          `http://localhost:8000/api/v1/auth/verify-password`,
           {
             password: password,
-            repassword: repassword,
+            resetToken: params.get("resettoken"),
+            email: params.get("email"),
           }
         );
         if (res.status === 200) {
