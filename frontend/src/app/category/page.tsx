@@ -1,10 +1,11 @@
 import React from "react";
-import { CheckBox } from "./checkbox";
+import { CategoryBox, SizeBox } from "./checkbox";
 
 const Category = () => {
   return (
     <div>
-      <CheckBox />
+      <CategoryBox />
+      <SizeBox />
     </div>
   );
 };
