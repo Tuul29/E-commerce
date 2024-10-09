@@ -12,11 +12,15 @@ export const Footer = () => {
         <img className="w-9 h-7" src="/img/Vector.png" alt="logo" />
         <div className="flex gap-10">
           <div className="flex gap-6">
-            <FiPhone className="border border-solid rounded-full" />
+            <div className="border rounded-full w-8 h-8 text-center p-2 text-md font-bold border-slate-500">
+              <FiPhone />
+            </div>
             <p>(976)7007-1234</p>
           </div>
           <div className="flex gap-6">
-            <CiMail className="border border-solid rounded-full" />
+            <div className="border rounded-full w-8 h-8 text-center p-2 text-md font-bold border-slate-500">
+              <CiMail />
+            </div>
             <p>contact@ecommerce.mn</p>
           </div>
         </div>

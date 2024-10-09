@@ -1,24 +1,26 @@
-import React from "react";
+"use client";
 import { Heart, Search, ShoppingCart } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { useUser } from "@/provider/user-provider";
+import { useContext } from "react";
+import { ProfileContext } from "@/context/profile-context";
 
 export const Header = () => {
-  // const { user } = useUser();
-  // console.log("user", user);
+  const { userForm } = useContext(ProfileContext);
+  console.log("user", userForm);
   return (
     <header className="flex items-center justify-between bg-black px-4 py-4 text-white text-sm">
-      <div className="flex items-center gap-3 ">
+      <div className="flex items-center gap-4">
         <div className="flex items-center gap-1">
           <Image src="/img/Vector.png" alt="logo" width={32} height={27} />
           <Link href="/">
-            <span className="text-slate-50">ECOMMERCE</span>
+            <span className="text-white-primary">ECOMMERCE</span>
           </Link>
         </div>
-        <Link href={"/category"}>
+        <Link href="/category">
           <span className="text-muted-foreground">Ангилал</span>
         </Link>
       </div>
@@ -43,22 +45,22 @@ export const Header = () => {
           className="mr-3"
           size={20}
         />
-        {/* {user && <img src={""} alt="profile" />}
-        {!user && ( */}
-        <>
-          <Link href="/signup">
-            <Button
-              variant="outline"
-              className="rounded-3xl border-blue-primary text-white-primary"
-            >
-              Бүртгүүлэх
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button className="button-primary">Нэвтрэх</Button>
-          </Link>
-        </>
-        {/* )} */}
+        {userForm && <img src={""} alt="'profile" />}
+        {!userForm && (
+          <>
+            <Link href="/signup">
+              <Button
+                variant="outline"
+                className="rounded-3xl border-blue-primary text-white-primary"
+              >
+                Бүртгүүлэх
+              </Button>
+            </Link>
+            <Link href="/login">
+              <Button className="button-primary">Нэвтрэх</Button>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

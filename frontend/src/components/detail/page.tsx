@@ -1,11 +1,13 @@
 import React from "react";
-
-const productDetail = () => {
+import { DetailImg } from "./detail-img";
+import { DetailText } from "./detail-text";
+const ProductDetail = () => {
   return (
-    <div>
-      <div></div>
+    <div className="flex justify-center gap-20">
+      <DetailImg />
+      <DetailText />
     </div>
   );
 };
 
-export default productDetail;
+export default ProductDetail;

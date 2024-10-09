@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
 import bcrypt from "bcrypt";
+import User from "../models/user.model";
 import { generateToken } from "../utils/jwt";
 import { sendEmail } from "../utils/send-email";
 import crypto from "crypto";
-
-//MONGOOSE => ODM => Object Data Mapping
+// interface IMyRequest extends Request {
+//   user: string | object;
+// }
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -13,17 +14,16 @@ export const signup = async (req: Request, res: Response) => {
     if (!firstname || !lastname || !email || !password) {
       return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
     }
-
     const createdUser = await User.create({
       firstname,
       lastname,
       email,
       password,
     });
-    res
-      .status(201)
-      .json({ message: "create user is sucessfull", user: createdUser });
+    console.log("SUCCESS", createdUser);
+    res.status(201).json({ message: "create user is sucessfull" });
   } catch (error) {
+    console.log("ERROR", error);
     res.status(500).json({ message: "Server Error", error: error });
   }
 };
@@ -31,23 +31,29 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    console.log("email", email);
+    if (!email || !password) {
+      return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
+    }
+
     const user = await User.findOne({ email });
-    console.log("user", user);
 
     if (!user) {
-      res.status(404).json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
+      return res
+        .status(400)
+        .json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
     } else {
       const isCheck = bcrypt.compareSync(password, user.password.toString());
       if (!isCheck) {
-        res.status(400).json({
+        return res.status(400).json({
           message: "Хэрэглэгчийн имэйл эсвэл нууц үг тохирохгүй байна.",
         });
       } else {
         const token = generateToken({ id: user._id });
+        const { firstname, profile_img, email } = user;
         res.status(200).json({
           message: "success",
           token,
+          user: { firstname, profile_img, email },
         });
       }
     }
@@ -57,9 +63,13 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const currentUser = async (req: Request, res: Response) => {
-  const { id } = req.user;
-  const findUser = await User.findOne(id);
-  res.status(200).json({ user: findUser, message: "Success" });
+  try {
+    const { id } = req.user;
+    const findUser = await User.findById(id);
+    res.status(200).json({ user: findUser, message: "Success" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const forgetPassword = async (req: Request, res: Response) => {
@@ -71,6 +81,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
     }
+
     const otp = Math.floor(Math.random() * 10_000)
       .toString()
       .padStart(4, "0");
@@ -83,6 +94,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
 
 export const verifyOtp = async (req: Request, res: Response) => {
   const { email, otpValue } = req.body;
+
   const findUser = await User.findOne({ email: email, otp: otpValue });
   if (!findUser) {
     return res
@@ -90,7 +102,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
       .json({ message: "Бүртгэлтэй хэрэглэгч эсвэл OTP код олдсонгүй" });
   }
 
-  //sendMail
+  //sendEmail
   const resetToken = crypto.randomBytes(25).toString("hex");
   const hashedResetToken = crypto
     .createHash("sha256")
@@ -100,20 +112,22 @@ export const verifyOtp = async (req: Request, res: Response) => {
   findUser.passwordResetTokenExpire = new Date(Date.now() + 10 * 60 * 1000);
   await findUser.save();
 
+  console.log("RT", resetToken);
   await sendEmail(
     email,
-    `<a href="http://localhost:3000/forgetpass/newpass?resettoken=${resetToken}&email=${email}">Нууц үг сэргээх холбоос</a>`
+    `<a href="http://localhost:3000/forgetpass/newpass?resettoken=${resetToken}&email=${email}>Нууц үг сэргээх холбоос</a>`
   );
   res.status(200).json({ message: "Нууц үг сэргээх имэйл илгээлээ" });
 };
 
 export const verifyPassword = async (req: Request, res: Response) => {
   const { password, resetToken } = req.body;
-  console.log(password, resetToken);
+
   const hashedResetToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
+
   const findUser = await User.findOne({
     passwordResetToken: hashedResetToken,
     passwordResetTokenExpire: { $gt: Date.now() },
@@ -129,6 +143,7 @@ export const verifyPassword = async (req: Request, res: Response) => {
   await findUser.save();
   res.status(200).json({ message: "Нууц үг  амжилттэй сэргээлээ" });
 };
+
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });

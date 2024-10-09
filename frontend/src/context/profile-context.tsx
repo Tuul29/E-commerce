@@ -21,6 +21,7 @@ interface ProContextType {
   verifyUserEmail: () => void;
   verifyUserOtp: () => void;
   setOtpEmail: Dispatch<SetStateAction<object>>;
+  userForm: IUser;
 }
 
 export const ProfileContext = createContext<ProContextType>({
@@ -30,6 +31,13 @@ export const ProfileContext = createContext<ProContextType>({
   verifyUserEmail: () => {},
   verifyUserOtp: () => {},
   setOtpEmail: () => {},
+  userForm: {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    repassword: "",
+  },
 });
 
 export const ProfileProvider = ({
@@ -38,7 +46,15 @@ export const ProfileProvider = ({
   children: React.ReactNode;
 }) => {
   const router = useRouter();
-  const [userFrom, setUserForm] = useState<IUser>({
+  const [userForm, setUserForm] = useState<IUser>({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    repassword: "",
+  });
+
+  const [user, setUser] = useState<IUser>({
     firstname: "",
     lastname: "",
     email: "",
@@ -52,13 +68,13 @@ export const ProfileProvider = ({
   const handleLogForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserForm({
-      ...userFrom,
+      ...userForm,
       [name]: value,
     });
   };
   const postUserData = async () => {
     try {
-      const { firstname, repassword, lastname, email, password } = userFrom;
+      const { firstname, repassword, lastname, email, password } = userForm;
       if (password !== repassword) {
         return console.log("password don't match");
       }
@@ -79,16 +95,21 @@ export const ProfileProvider = ({
   };
   const getCurrentUser = async () => {
     try {
-      const res = await axios.post(`${apiURL}/login`, userFrom);
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${apiURL}/auth/current-user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("first");
-      if (res.status === 400) {
-        console.log("burtgelgui hereglegsh bn");
-      }
+      // if (res.status === 400) {
+      //   console.log("burtgelgui hereglegch bn");
+      // }
       if (res.status === 200) {
-        const { token, user } = res.data;
-        console.log("User successfully signed in", token);
-        router.push("/dashboard");
-        localStorage.setItem("token", token);
+        const { user } = res.data;
+        setUser(user);
+        console.log("USERRR", res.data.user);
+        // router.push("/dashboard");
       } else {
         console.error("Failed customer:");
       }
@@ -97,8 +118,11 @@ export const ProfileProvider = ({
       console.log("Failed to sign in. Please try again.");
     }
   };
+
+  console.log("UF", user);
+
   const verifyUserEmail = async () => {
-    const { email } = userFrom;
+    const { email } = userForm;
     try {
       const res = await axios.post(`${apiURL}/verify/email`, email);
       if (res.status === 400) {
@@ -109,7 +133,7 @@ export const ProfileProvider = ({
         setOtpEmail({
           email: email,
         });
-        console.log("burtgeltei hereglegsh bn", email);
+        console.log("burtgeltei hereglegch bn", email);
       } else {
         console.error("Failed customer:");
       }
@@ -144,6 +168,7 @@ export const ProfileProvider = ({
         verifyUserEmail,
         setOtpEmail,
         verifyUserOtp,
+        userForm,
       }}
     >
       {children}
