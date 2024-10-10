@@ -6,15 +6,19 @@ import { useState } from "react";
 
 export const DetailText = () => {
   return (
-    <div>
-      <Badge>Шинэ</Badge>
+    <div className="flex flex-col gap-3">
+      <Badge className="bg-transparent text-black border border-black w-16 text-xs text-center font-semibold">
+        Шинэ
+      </Badge>
       <div className="flex gap-3">
-        <h1>Wildflower Hoodie</h1>
-        <CiHeart />
+        <h1 className="font-bold text-2xl">Wildflower Hoodie</h1>
+        <CiHeart className="w-6 h-6" />
       </div>
-      <p>Зэрлэг цэцгийн зурагтай даавуун материалтай цамц</p>
+      <p className="text-base">
+        Зэрлэг цэцгийн зурагтай даавуун материалтай цамц
+      </p>
       <div>
-        <p>Хэмжээний заавар</p>
+        <p className="text-base ">Хэмжээний заавар</p>
         <ul className="flex gap-3">
           <Button className="rounded-full bg-transparent border border-black text-black">
             S
@@ -36,16 +40,16 @@ export const DetailText = () => {
           <Button className="rounded-full bg-transparent border border-black text-black">
             -
           </Button>
-          <p>1</p>
+          <p className="text-center">1</p>
           <Button className="rounded-full bg-transparent border border-black text-black">
             +
           </Button>
         </div>
         <p>120'000</p>
-        <Button>Сагсанд нэмэх</Button>
+        <Button className="bg-[#2563EB]">Сагсанд нэмэх</Button>
         <div className="flex">
-          <p>Үнэлгээ</p>
-          <a>бүгдийг харах</a>
+          <p className="mr-2 text-sm">Үнэлгээ</p>
+          <a className="text-sm text-[#2563EB] underline">бүгдийг харах</a>
         </div>
       </div>
     </div>
