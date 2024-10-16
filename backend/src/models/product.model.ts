@@ -10,6 +10,7 @@ interface IProduct {
   quantity: number;
   discount: number;
   category: Schema.Types.ObjectId;
+  reviews: [Schema.Types.ObjectId];
 }
 
 const productSchema = new Schema<IProduct>(
@@ -43,6 +44,12 @@ const productSchema = new Schema<IProduct>(
       required: true,
       ref: "Category",
     },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
   },
   {
     timestamps: true,

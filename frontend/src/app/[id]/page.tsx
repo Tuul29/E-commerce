@@ -6,10 +6,10 @@ import { DetailText } from "@/components/detail/detail-text";
 import { ProductCard } from "@/components/product-card";
 import { products } from "@/lib/data";
 
-const ProductDetalPage = () => {
+const ProductDetailPage = () => {
   return (
-    <div className="w-1/2 m-auto p-10 ">
-      <div className="flex justify-center gap-20 p-5">
+    <div className="max-w-[1300px] mx-auto mt-14 mb-24">
+      <div className="flex items-center gap-20 p-5">
         <DetailImg />
         <DetailText />
       </div>
@@ -18,13 +18,13 @@ const ProductDetalPage = () => {
         {products.map((product, index) => {
           return (
             <>
-              <ProductCard
+              {/* <ProductCard
                 key={index}
                 name={product.name}
                 price={product.price}
-                image={product.image}
+                image={product.images[0]}
                 discount={product.discount}
-              />
+              /> */}
             </>
           );
         })}
@@ -33,4 +33,4 @@ const ProductDetalPage = () => {
   );
 };
 
-export default ProductDetalPage;
+export default ProductDetailPage;

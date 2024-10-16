@@ -17,7 +17,7 @@ const LogIn = () => {
   console.log("email", email);
   console.log("password", password);
 
-  const logIn = async () => {
+  const userLogIn = async () => {
     try {
       const res = await axios.post(`http://localhost:8000/api/v1/auth/login`, {
         email: email,
@@ -57,7 +57,7 @@ const LogIn = () => {
             className="input-primary"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button className="bg-blue-500 button-primary" onClick={logIn}>
+          <Button className="bg-blue-500 button-primary" onClick={userLogIn}>
             Нэвтрэх
           </Button>
         </div>

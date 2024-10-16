@@ -1,52 +1,64 @@
-import { Product } from "@/lib/data";
+import { Product } from "@/lib/types";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { formattedPrice } from "@/lib/utils";
+import Link from "next/link";
 
 const getDiscountedPrice = (price: number, discount: number) => {
   return price - (price * discount) / 100;
 };
 
-export const ProductCard = ({ name, price, image, discount }: Product) => {
+export const ProductCard = ({
+  name,
+  price,
+  images,
+  discount,
+  _id,
+}: Product) => {
   return (
-    <div className="relative w-[244px]">
-      <Image
-        src={image}
-        alt="image1"
-        width={244}
-        height={331}
-        className="rounded-lg"
-      />
-      <Heart size={22} strokeWidth={1} className="absolute top-4 right-4" />
-      <div className="mt-2">
-        <h3 className="font-light">{name}</h3>
-        <PriceWithDiscount price={price} discount={discount} />
+    <Link href={`/${_id}`}>
+      <div className="relative w-[244px]">
+        <Image
+          src={images[0]}
+          alt="image1"
+          width={244}
+          height={331}
+          className="rounded-lg"
+        />
+        <Heart size={22} strokeWidth={1} className="absolute top-4 right-4" />
+        <div className="mt-2">
+          <h3 className="font-light">{name}</h3>
+          <PriceWithDiscount price={price} discount={discount} />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
 export const FeaturedProductCard = ({
   name,
   price,
-  image,
+  images,
   discount,
+  _id,
 }: Product) => {
   return (
     <div className="relative col-span-2 row-span-10 mb-14">
-      <div className="relative w-full h-full">
-        <Image
-          src={image}
-          alt="image1"
-          fill={true}
-          className="rounded-lg -z-10"
-        />
-        <Heart size={22} strokeWidth={1} className="absolute top-4 right-4" />
-      </div>
-      <div className="mt-2">
-        <h3 className="font-light">{name}</h3>
-        <PriceWithDiscount price={price} discount={discount} />
-      </div>
+      <Link href={`/${_id}`}>
+        <div className="relative w-full h-full">
+          <Image
+            src={images[0]}
+            alt="image1"
+            fill={true}
+            className="rounded-lg -z-10"
+          />
+          <Heart size={22} strokeWidth={1} className="absolute top-4 right-4" />
+        </div>
+        <div className="mt-2">
+          <h3 className="font-light">{name}</h3>
+          <PriceWithDiscount price={price} discount={discount} />
+        </div>
+      </Link>
     </div>
   );
 };

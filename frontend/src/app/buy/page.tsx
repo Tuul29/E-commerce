@@ -1,98 +1,120 @@
 "use client";
 
-import React from "react";
-import { ProductCard } from "@/components/product-card";
-import { products } from "@/lib/data";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import axios from "axios";
-import { Card } from "@/components/ui/card";
-const BuyPage = () => {
-  const ordered = products.slice(1, 5);
-  const [step, setStep] = useState(1);
-  const [count, setCount] = useState<number>(0);
+import { apiUrl } from "@/lib/utils";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { Cart } from "@/lib/types";
 
-  const minus = () => {
-    setCount(count - 1);
-  };
-  const add = () => {
-    setCount(count + 1);
-  };
+const BuySteps = () => {
+  const [cartData, setCartData] = useState<Cart>([
+    {
+      product: { _id: "", name: "", price: 0, images: [""], discount: 0 },
+      quantity: 0,
+    },
+  ]);
 
-  const nextPage = async () => {
+  const getCartData = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/auth/buy");
-      if (res.status === 200) {
-        setStep(step + 1);
+      const userToken = localStorage.getItem("token");
+      const response = await axios.get(`${apiUrl}/carts/get-cart`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
+
+      if (response.status === 200) {
+        setCartData(response.data.cart.products);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to add to cart");
+    }
   };
 
+  const updateQuanity = async (productId: string, newQuantity: number) => {
+    setCartData((prevCart) =>
+      prevCart.map((item) =>
+        item.product._id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      )
+    );
+    const userToken = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        `${apiUrl}/carts/update-cart`,
+        {
+          productId,
+          newQuantity,
+        },
+        { headers: { Authorization: `Bearer ${userToken}` } }
+      );
+
+      if (response.status === 200) {
+        toast.success("Successfully updated");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to add to cart");
+    }
+  };
+
+  useEffect(() => {
+    getCartData();
+  }, []);
+
+  console.log("cartData", cartData);
   return (
-    <div>
-      <div className="m-auto content-center">
-        {step === 1 && (
-          <Card className="rounded-2xl m-auto bg-white p-4 flex flex-col justify-between">
-            <div className="flex gap-2">
-              <p>1.</p>
-              <p>Сагс</p>
-              <p>(4)</p>
-            </div>
-            <div className="flex flex-col gap-5">
-              {ordered.map((r) => (
-                <div className="flex justify-between mx-10">
-                  <div className="flex gap-2">
-                    <img src={r.image} className="w-[50px] h-[50px] rounded " />{" "}
-                    <ul className="font-light text-[13x]">
-                      <li>{r.name}</li>
-                      <li className="flex">
-                        <Button className="rounded-full bg-transparent border border-black text-black">
-                          -
-                        </Button>
-                        <p className="text-center">1</p>
-                        <Button className="rounded-full bg-transparent border border-black text-black">
-                          +
-                        </Button>
-                      </li>
-                      <li className="font-bold">{r.price}₮</li>
-                    </ul>
-                  </div>{" "}
+    <div className="h-screen p-4">
+      {cartData.map((cartProduct) => {
+        const { product } = cartProduct;
+        return (
+          <Card className="p-4 rounded-2xl w-1/2 mb-2" key={product._id}>
+            <CardContent className="flex justify-between p-0">
+              <div className="flex gap-6">
+                <img
+                  src={product.images[0]}
+                  alt="wishlists"
+                  className="w-32 h-28 rounded-2xl"
+                />
+                <div>
+                  <p className="font-normal text-base">{product.name}</p>
+                  <div className="flex gap-5">
+                    <p
+                      className="border border-solid border-black px-2 rounded-full cursor-pointer"
+                      onClick={() =>
+                        updateQuanity(
+                          product._id,
+                          Math.max(0, cartProduct.quantity - 1)
+                        )
+                      }
+                    >
+                      -
+                    </p>
+                    <p>{cartProduct.quantity}</p>
+                    <p
+                      className="border border-solid border-black px-2 rounded-full cursor-pointer"
+                      onClick={() =>
+                        updateQuanity(product._id, cartProduct.quantity + 1)
+                      }
+                    >
+                      +
+                    </p>
+                  </div>
+                  <p className="mt-1 mb-2 text-sm font-bold">
+                    {product.price.toLocaleString()}
+                  </p>
                 </div>
-              ))}
-              <div className="flex justify-between border-t-[1px] border-dashed px-10 pt-8">
-                <h3>Нийт төлөх дүн:</h3>
-                <h2 className="font-bold">"360,000₮</h2>
               </div>
-              <div>
-                <Button onClick={nextPage}>Худалдан авах</Button>
-              </div>
-            </div>
+            </CardContent>
           </Card>
-        )}
-        {step === 2 && (
-          <div>
-            <div className="flex flex-col gap-5">
-              {ordered.map((r) => (
-                <div className="flex justify-between mx-10">
-                  <div className="flex gap-2">
-                    <img src={r.image} className="w-[50px] h-[50px] rounded " />{" "}
-                    <ul className="font-light text-[13x]">
-                      <li>{r.name}</li>
-                      <li>1x {r.price}₮</li>
-                    </ul>
-                  </div>{" "}
-                  <h2 className="font-bold">{r.price}₮</h2>
-                </div>
-              ))}
-              <div className="flex justify-between border-t-[1px] border-dashed px-10 pt-8">
-                <h3>Нийт төлөх дүн:</h3>
-                <h2 className="font-bold">480,000₮</h2>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        );
+      })}
+
+      <Button className="button-primary">Худалдан авах</Button>
     </div>
   );
 };
-export default BuyPage;
+
+export default BuySteps;
