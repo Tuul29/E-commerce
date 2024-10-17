@@ -4,9 +4,6 @@ import User from "../models/user.model";
 import { generateToken } from "../utils/jwt";
 import { sendEmail } from "../utils/send-email";
 import crypto from "crypto";
-// interface IMyRequest extends Request {
-//   user: string | object;
-// }
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -14,13 +11,13 @@ export const signup = async (req: Request, res: Response) => {
     if (!firstname || !lastname || !email || !password) {
       return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
     }
-    const createdUser = await User.create({
+    await User.create({
       firstname,
       lastname,
       email,
       password,
     });
-    console.log("SUCCESS", createdUser);
+
     res.status(201).json({ message: "create user is sucessfull" });
   } catch (error) {
     console.log("ERROR", error);
@@ -58,6 +55,7 @@ export const login = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
+    console.log("error", error);
     res.status(400).json({ message: "Client error" });
   }
 };
@@ -65,10 +63,11 @@ export const login = async (req: Request, res: Response) => {
 export const currentUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.user;
-    const findUser = await User.findById(id);
+    const findUser = await User.findById(id).select("_id email");
     res.status(200).json({ user: findUser, message: "Success" });
   } catch (error) {
-    console.log(error);
+    console.log("error", error);
+    res.status(400).json({ message: "Failed to get current user" });
   }
 };
 

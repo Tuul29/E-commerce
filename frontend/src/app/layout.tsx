@@ -29,12 +29,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} `}>
         <UserProvider>
-          <ProfileProvider>
-            <Header />
-            {children}
-            <Footer />
-            <Toaster />
-          </ProfileProvider>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster />
         </UserProvider>
       </body>
     </html>

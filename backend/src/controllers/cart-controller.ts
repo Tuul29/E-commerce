@@ -1,13 +1,6 @@
 import { Request, Response } from "express";
 import Cart from "../models/cart.model";
 
-// export const getAllCategory = (req: Request, res: Response) => {
-//   Category.create(req.body);
-//   res.status(200).json({
-//     message: "All category is read successfully",
-//   });
-// };
-
 export const createCart = async (req: Request, res: Response) => {
   const { userId, productId, totalAmount, quantity } = req.body;
   try {
@@ -47,6 +40,7 @@ export const createCart = async (req: Request, res: Response) => {
     });
   }
 };
+
 export const getCart = async (req: Request, res: Response) => {
   const { id } = req.user;
   try {
@@ -63,6 +57,7 @@ export const getCart = async (req: Request, res: Response) => {
     });
   }
 };
+
 export const updateCart = async (req: Request, res: Response) => {
   const { id } = req.user;
   const { productId, newQuantity } = req.body;

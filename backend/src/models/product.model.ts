@@ -5,8 +5,8 @@ interface IProduct {
   description: string;
   price: number;
   size: string;
-  image: [string];
-  is_New: boolean;
+  images: [string];
+  isNew: boolean;
   quantity: number;
   discount: number;
   category: Schema.Types.ObjectId;
@@ -27,18 +27,14 @@ const productSchema = new Schema<IProduct>(
       type: String,
       default: "comment",
     },
-    size: {
-      type: String,
-      enum: ["S", "M", "L", "XL", "XXL"],
-      default: "S",
-    },
-    image: {
+    size: { type: String, enum: ["S", "L", "M", "XL", "XXL"], default: "S" },
+    images: {
       type: [String],
       default: ["img"],
     },
-    is_New: { type: Boolean, default: true },
+    isNew: { type: Boolean, default: true },
     quantity: { type: Number, required: true },
-    discount: { type: Number, defualt: 0 },
+    discount: { type: Number, default: 0 },
     category: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -55,6 +51,7 @@ const productSchema = new Schema<IProduct>(
     timestamps: true,
   }
 );
+
 const Product = model<IProduct>("Product", productSchema);
 
 export default Product;

@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+
 interface IUser {
   _id: Schema.Types.ObjectId;
   firstname: String;
@@ -20,16 +21,15 @@ interface IUser {
 const userSchema = new Schema<IUser>({
   firstname: {
     type: String,
-    unique: true,
     required: [true, "Хэрэглэгчийн нэрийг заавал оруулна уу."],
   },
   lastname: {
     type: String,
-    unique: true,
     required: [true, "Хэрэглэгчийн овгийг заавал оруулна уу."],
   },
   email: {
     type: String,
+    unique: true,
     required: [true, "Хэрэглэгчийн имэйл хаягийг заавал оруулна уу."],
   },
   password: {
@@ -54,7 +54,7 @@ const userSchema = new Schema<IUser>({
 
   otp: { type: String, default: "" },
   passwordResetToken: { type: String, default: "" },
-  passwordResetTokenExpire: { type: Date, default: undefined },
+  passwordResetTokenExpire: { type: Date, default: Date.now },
 
   updated_at: {
     type: Date,
