@@ -23,7 +23,7 @@ export const Header = () => {
     <header className="flex items-center justify-between bg-black px-4 py-4 text-white text-sm">
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1">
-          <Image src="/logo.svg" alt="logo" width={32} height={27} />
+          <Image src="/img/Vector.png" alt="logo" width={32} height={27} />
           <Link href="/">
             <span className="text-white-primary">ECOMMERCE</span>
           </Link>
@@ -46,7 +46,9 @@ export const Header = () => {
         />
       </div>
       <div className="flex items-center gap-3">
-        <Heart color="white" className="mr-3" size={20} strokeWidth={1} />
+        <Link href={"/frivate"}>
+          <Heart color="white" className="mr-3" size={20} strokeWidth={1} />
+        </Link>
         <Link href={"/buy-steps"}>
           <ShoppingCart
             strokeWidth={1}

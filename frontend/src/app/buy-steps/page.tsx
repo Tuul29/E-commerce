@@ -19,7 +19,7 @@ const BuySteps = () => {
   const getCartData = async () => {
     try {
       const userToken = localStorage.getItem("token");
-      const response = await axios.get(`${apiUrl}/carts/get-cart`, {
+      const response = await axios.get(`${apiUrl}carts/get-cart`, {
         headers: { Authorization: `Bearer ${userToken}` },
       });
 
@@ -43,7 +43,7 @@ const BuySteps = () => {
     const userToken = localStorage.getItem("token");
     try {
       const response = await axios.put(
-        `${apiUrl}/carts/update-cart`,
+        `${apiUrl}carts/update-cart`,
         {
           productId,
           newQuantity,

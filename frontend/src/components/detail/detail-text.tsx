@@ -22,7 +22,7 @@ export const DetailText = () => {
   const [productQuantity, setProductQuantity] = useState(0);
   const getProductDataById = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/products/${id}`);
+      const response = await axios.get(`${apiUrl}products/${id}`);
       if (response.status === 200) {
         setProduct(response.data.product);
       }
@@ -33,7 +33,7 @@ export const DetailText = () => {
   };
   const addToCart = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/carts/create-cart`, {
+      const response = await axios.post(`${apiUrl}carts/create-cart`, {
         userId: user?._id,
         productId: id,
         quantity: productQuantity,

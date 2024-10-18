@@ -96,7 +96,7 @@ export const ProfileProvider = ({
   const getCurrentUser = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`${apiURL}/auth/current-user`, {
+      const res = await axios.get(`${apiURL}auth/current-user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

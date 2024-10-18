@@ -21,7 +21,7 @@ const LogIn = () => {
   const userLogIn = async () => {
     const { email, password } = logInForm;
     try {
-      const response = await axios.post(`${apiUrl}/auth/login`, {
+      const response = await axios.post(`${apiUrl}auth/login`, {
         email,
         password,
       });

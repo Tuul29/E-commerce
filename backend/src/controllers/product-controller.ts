@@ -7,7 +7,7 @@ export const getAllProduct = async (req: Request, res: Response) => {
     res.status(200).json({ message: "success to get all product", products });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: "failed to get all product" });
+    res.status(400).json({ message: "failed to get all product", error });
   }
 };
 

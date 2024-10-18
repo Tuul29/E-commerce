@@ -33,7 +33,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const userToken = localStorage.getItem("token");
       if (userToken) {
-        const response = await axios.get(`${apiUrl}/auth/current-user`, {
+        const response = await axios.get(`${apiUrl}auth/current-user`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
         if (response.status === 200) {
@@ -52,6 +52,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     getCurrentUser();
   }, [loggedIn]);
+
+  console.log("USERs", user);
 
   return (
     <UserContext.Provider value={{ user, setUser, loading, setIsLoggedIn }}>
